@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 
 
@@ -10,9 +11,12 @@ public class Addierer : MonoBehaviour
 {
     public Text textObstGesamt;
     public Text textObstTeil;
+    public Text textCounter;
     public int rand_ObstkorbGesamt;
     public int rand_ObstkorbTeil;
     public InputField inputKind;
+    private int counter;
+    public Transform prefab;
     // Start is called before the first frame update
     
         private void initRandoms()
@@ -24,12 +28,33 @@ public class Addierer : MonoBehaviour
         rand_ObstkorbTeil = Random.Range(1, rand_ObstkorbGesamt);
         Debug.Log("randnumTeil" + rand_ObstkorbTeil);
         textObstTeil.text = " " + rand_ObstkorbTeil + "+";
+        
 
+
+    }
+
+
+
+
+    private void instantiateTeilObstkorb()
+    {
+        for(int i=rand_ObstkorbTeil;i<rand_ObstkorbTeil; i++)
+        Instantiate(prefab, new Vector3(2.0F, 0, 0), Quaternion.identity);
+        
+
+    }
+    private void counterSwap()
+    {
+        if(counter==3)
+        {
+            SceneManager.LoadScene(2);
+        }
     }
     void Start()
     {
-
+        counter = 0;
         initRandoms();
+        instantiateTeilObstkorb(); 
     }
 
     public void OnMouseUp()
@@ -44,6 +69,11 @@ public class Addierer : MonoBehaviour
             {
                 Debug.Log("Rechnung ist richtig");
                 initRandoms();
+                counter++;
+                Debug.Log("funktioniert" + counter);
+                textCounter.text = " " + counter +"/3";
+                counterSwap();
+
             }
             else
             {
